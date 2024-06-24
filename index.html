@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            margin: auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            ;
+
+        }
+
+        #mycanvas {
+            /* width: 100%; */
+            /* margin: 10px;
+            margin-left: 25px; */
+            padding: 25px;
+        }
+
+        #certificate-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 25px;
+
+        }
+
+        #show-certificate{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+
+        .canva{
+            border: 2px solid black;
+            width: 1000px;
+            height: 500px;
+
+        }
+
+        .canva_img {
+            width: 100px;
+            height: 100px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HTML5 Canvas Draw Image</h1>
+
+    <section id="input-section"> 
+        <input type="file" id="fileElem" accept="image/*" style="display:none" />
+        <a href="#" id="fileSelect">Select some files</a>
+        
+        
+    </section>
+
+
+    <section id="certificate-section">
+
+        <!-- <button onclick="generateForAll()">Generate for All</button> -->
+
+        <div id="fileList">
+            <p>No files selected!</p>
+        </div>
+
+
+        <canvas id="myCanvas" width="1000px" height="500px" style="border:1px solid grey;">
+            Sorry, your browser does not support canvas.
+        </canvas>
+
+        <div id="show-certificate"> 
+        </div>
+
+    </section>
+
+    <script src="try.js">
+
+    </script>
+
+</body>
+
+</html>
