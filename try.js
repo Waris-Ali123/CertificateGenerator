@@ -3,6 +3,8 @@ const fileSelect = document.getElementById("fileSelect"),
     fileElem = document.getElementById("fileElem"),
     fileList = document.getElementById("fileList");
 
+
+
 fileSelect.addEventListener(
     "click",
     (e) => {
@@ -16,6 +18,108 @@ fileSelect.addEventListener(
 
 fileElem.addEventListener("change", handleFiles, false);
 fileElem.addEventListener("change", generateForAll, false);
+
+let names1 = [{
+    "name": "Iorgo khan"
+}, {
+    "name": "Mattias Kumar"
+}, {
+    "name": "Maison Jacksen"
+}, {
+    "name": "Barthel bahiillao"
+}, {
+    "name": "Nico Chaurasiya"
+}, {
+    "name": "Evelyn Harris"
+}, {
+    "name": "Oliver Smith"
+}, {
+    "name": "Liam Johnson"
+}, {
+    "name": "Noah Williams"
+}, {
+    "name": "Sophia Brown"
+}, {
+    "name": "Isabella Garcia"
+}, {
+    "name": "Mia Martinez"
+}, {
+    "name": "Amelia Rodriguez"
+}, {
+    "name": "Harper Davis"
+}, {
+    "name": "Evelyn Moore"
+}, {
+    "name": "Avery Thomas"
+}, {
+    "name": "Ella White"
+}, {
+    "name": "Scarlett Lopez"
+}, {
+    "name": "Grace Lee"
+}, {
+    "name": "Aria Gonzalez"
+}, {
+    "name": "Chloe Harris"
+}, {
+    "name": "Victoria Clark"
+}, {
+    "name": "Zoey Lewis"
+}, {
+    "name": "Lily Robinson"
+}, {
+    "name": "Layla Walker"
+}, {
+    "name": "Riley Perez"
+}, {
+    "name": "Nora Hall"
+}, {
+    "name": "Brooklyn Young"
+}, {
+    "name": "Hannah Allen"
+}, {
+    "name": "Leah King"
+}, {
+    "name": "Zoe Wright"
+}, {
+    "name": "Stella Scott"
+}, {
+    "name": "Hazel Green"
+}, {
+    "name": "Ellie Adams"
+}, {
+    "name": "Paisley Baker"
+}, {
+    "name": "Audrey Nelson"
+}, {
+    "name": "Skylar Carter"
+}, {
+    "name": "Violet Mitchell"
+}, {
+    "name": "Claire Perez"
+}, {
+    "name": "Bella Roberts"
+}, {
+    "name": "Aurora Turner"
+}, {
+    "name": "Lucy Phillips"
+}, {
+    "name": "Anna Campbell"
+}, {
+    "name": "Samantha Parker"
+}, {
+    "name": "Caroline Evans"
+}, {
+    "name": "Genesis Edwards"
+}, {
+    "name": "Aubrey Collins"
+}, {
+    "name": "Madelyn Stewart"
+}, {
+    "name": "Serenity Morris"
+}, {
+    "name": "Kennedy Rogers"
+}];
 
 
 
@@ -31,62 +135,74 @@ let names = [{
     "name": "Nico Chaurasiya"
 }];
 
-// console.log(names[0].name)
+
 
 function generateForAll() {
+    document.getElementById('show-certificate').innerHTML = "";
 
-    
+
     for (let i = 0; i < this.files.length; i++) {
 
-        
+
         names.forEach((elem) => {
-            
-        
-        
-        
-        // console.log(canva_img.src);
-        
-        let canva_img = new Image();
-        canva_img.src = URL.createObjectURL(this.files[i]);
-        canva_img.width = '1000';
-        canva_img.height = '500';
 
-        // canva_img.classList.add('canva_img');
-   
-        canva_img.addEventListener("load",(e)=>{
-            
-            const canva = document.createElement('canvas');
-        // canva.classList.add('canva');
+            console.log(elem.name.toUpperCase());
 
-        const canva_ctx = canva.getContext("2d");
+            let canvaAndDownloadLinkDiv = document.createElement('div');
+            canvaAndDownloadLinkDiv.classList.add('canvaDiv');
 
-        canva.width = canva_img.width;
-                        canva.height = canva_img.height;
+            let canva_img = new Image();
+            canva_img.src = URL.createObjectURL(this.files[i]);
+            canva_img.width = '1000';
+            canva_img.height = '500';
 
-            
-            
-            canva_ctx.drawImage(canva_img, 0, 0, canva_img.width, canva_img.height  );
+            function handleImageLoad (e){
 
-        console.log('imageid : ' + canva_img);
-        canva_ctx.font = '30px Arial';
-        canva_ctx.textAlign = 'center';
-        canva_ctx.textBaseline = "bottom";
-        canva_ctx.fillText(elem.name,  canva_img.width / 2, (canva_img.height  / 2) - 10);
-        
-        let downloadLink = document.createElement('a');
-        downloadLink.href = canva.toDataURL("image/png");
-        downloadLink.download = `${elem.name}_certificate.png`;
-        downloadLink.innerText = `download ${elem.name}'s certificate`;
-        
-        //printing name in it..
-        document.getElementById('show-certificate').append(canva, downloadLink);
-    });
-    
-    
-    
-});
+                const canva = document.createElement('canvas');
+                canva.classList.add('canva');
+
+                const canva_ctx = canva.getContext("2d");
+
+                canva.width = canva_img.width;
+                canva.height = canva_img.height;
+
+
+
+                canva_ctx.drawImage(canva_img, 0, 0, canva_img.width, canva_img.height);
+
+                drawText(canva_ctx,elem.name,canva_img.width / 2, (canva_img.height / 2) - 10);
+
+                let downloadLink = document.createElement('a');
+                downloadLink.href = canva.toDataURL("image/png");
+                downloadLink.download = `${elem.name.toUpperCase()}_certificate.png`;
+                downloadLink.innerText = `download ${elem.name}'s certificate`;
+                downloadLink.classList.add('download-link');
+
+                //printing name in it..
+                canvaAndDownloadLinkDiv.append(canva, downloadLink);
+                document.getElementById('show-certificate').append(canvaAndDownloadLinkDiv);
+
+            }
+
+            canva_img.addEventListener("load",handleImageLoad);
+            canva_img.addEventListener("change",handleImageLoad);
+
+        });
+    }
+
 }
 
+
+function drawText(canva_ctx, name, x, y) {
+    
+    
+    const fontSize = document.getElementById('fontSize').value + 'px' ;
+    const fontFamily  = document.getElementById('fontFamily').value;
+
+    canva_ctx.font = `${fontSize} ${fontFamily}`;
+    canva_ctx.textAlign = 'center';
+    canva_ctx.textBaseline = "bottom";
+    canva_ctx.fillText(name.toUpperCase(), x, y);
 }
 
 

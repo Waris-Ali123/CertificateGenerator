@@ -4,24 +4,83 @@
 <head>
     <style>
         * {
-            margin: auto;
+            margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            /* box-sizing: border-box; */
         }
 
         body {
             width: 100%;
-            ;
-
+            /* background-color: rgb(205, 205, 205); */
         }
 
-        #mycanvas {
-            /* width: 100%; */
-            /* margin: 10px;
-            margin-left: 25px; */
-            padding: 25px;
+        #input-section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90vh;
+            width: 100%;
+            /* background-color: aquamarine; */
+            background: url('https://image.lexica.art/full_webp/6e85be1d-92a2-4f94-821b-0c158e115e12');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: bottom 0px center;
+            /* padding-top: 55px; */
+            gap: 25px;
         }
 
+        #input-section h1{
+            font-size: 45px;
+            color:darkblue;
+        }
+
+        #fileSelect{
+            text-decoration: none;
+            font-size: 25px;
+            background-color: wheat;
+            border-radius: 15px;
+            padding: 5px 25px;
+            color:black;
+            font-weight: 600;
+            transition: 0.3s ease-in;
+        }
+
+        #fileSelect:hover{
+            transform: scale(1.1);
+        }
+
+        .fontstyles{
+            width:250px;
+            font-size: large;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            /* align-ite; */
+
+        }
+         
+
+        #fontSize,#fontFamily{
+            background:none;
+            border: none;
+            font-size: large;
+            font-weight: 500;
+            border-bottom: 1px solid black;
+            outline: none;
+            border-radius: 15px;
+            padding: 5px 15px;
+            width: 40%;
+            /* font-size: large; */
+        }
+
+        #fontSize:focus,
+        #fontFamily:focus{
+            background-color: rgba(0, 0, 0, 0.121);
+        }
         #certificate-section {
             width: 100%;
             display: flex;
@@ -29,6 +88,8 @@
             align-items: center;
             justify-content: center;
             padding: 50px 25px;
+            /* margin: auto; */
+
 
         }
 
@@ -37,30 +98,69 @@
             flex-direction: column;
             flex-wrap: wrap;
             gap: 25px;
-            justify-content: center;
+            align-items: left;
+            width: 100%;
+            /* margin: auto; */
+
+            
+
+           
+            /* align-items: left; */
+        }
+
+        .canvaDiv{
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 35px;
+            align-items: left;
+            padding-bottom: 25px;
+            border-bottom: 2px solid gray;
+            width: 100%;
+            /* margin: auto; */
+
         }
 
         .canva{
-            border: 2px solid black;
-            width: 1000px;
-            height: 500px;
-
+            border: 10px solid black;
+            margin: auto;
         }
 
-        .canva_img {
+        .download-link{
+            text-align: left;
+            font-size: 20px;
+            font-family: system-ui, -apple-system,sans-serif;
+            font-weight: 550;
+            text-decoration: none;
+            color:Black;
+            text-transform: capitalize;
+            
+        }
+
+        /* .canva_img {
             width: 100px;
             height: 100px;
 
-        }
+        } */
     </style>
 </head>
 
 <body>
-    <h1>HTML5 Canvas Draw Image</h1>
+    
+    <section id="input-section">
+        <h1>HTML5 Canvas Draw Image</h1>
 
-    <section id="input-section"> 
         <input type="file" id="fileElem" accept="image/*" style="display:none" />
-        <a href="#" id="fileSelect">Select some files</a>
+        <a href="#" id="fileSelect">Click here to select an image of your certificate file...</a>
+
+        <div class="fontstyles">
+            <label for="fontFamily">Font-Family: </label>
+            <input type="text" id="fontFamily" placeholder="Enter the font-family you want (Arial)" value="Arial"/>
+        </div>
+        <div class="fontstyles">
+            <label for="fontSize">Font-Size: </label>
+            <input type="number" id="fontSize" placeholder="Enter the font-size you want (30px)" value="30" />
+        </div>
         
         
     </section>
@@ -68,18 +168,17 @@
 
     <section id="certificate-section">
 
-        <!-- <button onclick="generateForAll()">Generate for All</button> -->
-
-        <div id="fileList">
+        <!-- <div id="fileList">
             <p>No files selected!</p>
-        </div>
+        </div> -->
 
 
-        <canvas id="myCanvas" width="1000px" height="500px" style="border:1px solid grey;">
+        <!-- <canvas id="myCanvas" width="1000px" height="500px" style="border:1px solid grey;">
             Sorry, your browser does not support canvas.
-        </canvas>
+        </canvas> -->
 
         <div id="show-certificate"> 
+           <h1>Your certificates will show here</h1> 
         </div>
 
     </section>
