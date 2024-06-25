@@ -1,9 +1,7 @@
 
-const fileSelect = document.getElementById("fileSelect"),
-    fileElem = document.getElementById("fileElem"),
-    fileList = document.getElementById("fileList");
-
-
+const fileSelect = document.getElementById("fileSelect");
+const fileElem = document.getElementById("fileElem");
+const fileList = document.getElementById("fileList");
 
 fileSelect.addEventListener(
     "click",
@@ -12,12 +10,13 @@ fileSelect.addEventListener(
             fileElem.click();
         }
         e.preventDefault(); // prevent navigation to "#"
+        console.log('stopped')
     },
     false,
 );
 
 fileElem.addEventListener("change", handleFiles, false);
-fileElem.addEventListener("change", generateForAll, false);
+// fileElem.addEventListener("change", generateForAll, false);
 
 let names1 = [{
     "name": "Iorgo khan"
@@ -137,67 +136,65 @@ let names = [{
 
 
 
-function generateForAll() {
+function generateForAll(impfile,x,y) {
     document.getElementById('show-certificate').innerHTML = "";
 
+    names.forEach((elem) => {
 
-    for (let i = 0; i < this.files.length; i++) {
+        console.log(elem.name.toUpperCase());
 
+        let canvaAndDownloadLinkDiv = document.createElement('div');
+        canvaAndDownloadLinkDiv.classList.add('canvaDiv');
 
-        names.forEach((elem) => {
+        let canva_img = new Image();
+        canva_img.src = URL.createObjectURL(impfile);
+        canva_img.width = '1000';
+        canva_img.height = '500';
 
-            console.log(elem.name.toUpperCase());
+        function handleImageLoad(e) {
 
-            let canvaAndDownloadLinkDiv = document.createElement('div');
-            canvaAndDownloadLinkDiv.classList.add('canvaDiv');
+            const canva = document.createElement('canvas');
+            canva.classList.add('canva');
 
-            let canva_img = new Image();
-            canva_img.src = URL.createObjectURL(this.files[i]);
-            canva_img.width = '1000';
-            canva_img.height = '500';
+            const canva_ctx = canva.getContext("2d");
 
-            function handleImageLoad (e){
-
-                const canva = document.createElement('canvas');
-                canva.classList.add('canva');
-
-                const canva_ctx = canva.getContext("2d");
-
-                canva.width = canva_img.width;
-                canva.height = canva_img.height;
+            canva.width = canva_img.width;
+            canva.height = canva_img.height;
 
 
 
-                canva_ctx.drawImage(canva_img, 0, 0, canva_img.width, canva_img.height);
+            canva_ctx.drawImage(canva_img, 0, 0, canva_img.width, canva_img.height);
 
-                drawText(canva_ctx,elem.name,canva_img.width / 2, (canva_img.height / 2) - 10);
+            drawText(canva_ctx, elem.name, x,y);
 
-                let downloadLink = document.createElement('a');
-                downloadLink.href = canva.toDataURL("image/png");
-                downloadLink.download = `${elem.name.toUpperCase()}_certificate.png`;
-                downloadLink.innerText = `download ${elem.name}'s certificate`;
-                downloadLink.classList.add('download-link');
+            let downloadLink = document.createElement('a');
+            downloadLink.href = canva.toDataURL("image/png");
+            downloadLink.download = `${elem.name.toUpperCase()}_certificate.png`;
+            downloadLink.innerText = `download ${elem.name}'s certificate`;
+            downloadLink.classList.add('download-link');
 
-                //printing name in it..
-                canvaAndDownloadLinkDiv.append(canva, downloadLink);
-                document.getElementById('show-certificate').append(canvaAndDownloadLinkDiv);
+            // downloadLink.addEventListener('click', (event) => {
+            //     event.preventDefault();
+            //     downloadLink.click();
+            // });
 
-            }
+            //printing name in it..
+            canvaAndDownloadLinkDiv.append(canva, downloadLink);
+            document.getElementById('show-certificate').append(canvaAndDownloadLinkDiv);
 
-            canva_img.addEventListener("load",handleImageLoad);
-            canva_img.addEventListener("change",handleImageLoad);
+        }
 
-        });
-    }
+        canva_img.addEventListener("load", handleImageLoad);
+        canva_img.addEventListener("change", handleImageLoad);
 
+    });
 }
 
 
+const fontSize = document.getElementById('fontSize').value + 'px';
+const fontFamily = document.getElementById('fontFamily').value;
+
 function drawText(canva_ctx, name, x, y) {
-    
-    
-    const fontSize = document.getElementById('fontSize').value + 'px' ;
-    const fontFamily  = document.getElementById('fontFamily').value;
 
     canva_ctx.font = `${fontSize} ${fontFamily}`;
     canva_ctx.textAlign = 'center';
@@ -205,39 +202,10 @@ function drawText(canva_ctx, name, x, y) {
     canva_ctx.fillText(name.toUpperCase(), x, y);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const canvas = document.getElementById("myCanvas");
-const ctx = canvas.getContext("2d");
-
 function handleFiles() {
 
     if (!this.files.length) {
-        fileList.innerHTML = "<p>No files selected!</p>";
+        fileList.innerHTML = "<h2>No files selected!</h2>";
     } else {
         fileList.innerHTML = "";
 
@@ -250,23 +218,13 @@ function handleFiles() {
 
             const img = document.createElement("img");
             img.src = URL.createObjectURL(this.files[i]);
+            img.height = 160;
+            img.width = 260;
 
-            img.height = 60;
-            img.addEventListener("load", (e) => {
-                ctx.drawImage(img, 0, 0, canvas.clientWidth, canvas.clientHeight);
-                console.log('imageid : ' + img);
-                ctx.font = '30px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = "bottom";
-                ctx.fillText('hello world', canvas.clientWidth / 2, (canvas.clientHeight / 2) - 10);
+            img.addEventListener("click", (e) => {
+                makingTestTemplate(img, this.files[i]);
 
-                let downloadLink = document.createElement('a');
-                downloadLink.href = canvas.toDataURL("image/png");
-                downloadLink.download = 'hello.png';
-                downloadLink.innerText = "download certificate";
-                document.getElementById('certificate-section').append(downloadLink);
-                // generateForAll();
-                //printing name in it..
+
             });
 
             // img.onload = () => {
@@ -278,9 +236,108 @@ function handleFiles() {
             info.innerHTML = `${this.files[i].name}: ${this.files[i].size} bytes`;
             li.appendChild(info);
         }
+
+        let msg = document.createElement('h1');
+        msg.innerText = 'Please click one from the above images to be displayed on frame';
+        msg.style.textAlign = "Center";
+        fileList.appendChild(msg);
+
     }
 }
 
+function makingTestTemplate(imgFetchedFromTestTemplate, fileForGenerateForAll) {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    var imgToDraw = new Image();
+    imgToDraw.src = imgFetchedFromTestTemplate.src;
+
+    imgToDraw.width = '1000';
+    imgToDraw.height = '500';
+
+    canvas.width = imgToDraw.width;
+    canvas.height = imgToDraw.height;
+
+    let x = canvas.clientWidth / 2, y = (canvas.clientHeight / 2) - 10;
+
+    canvas.addEventListener('click', (event) => {
+        // Get the coordinates relative to the element
+        x = event.offsetX;
+        y = event.offsetY;
+        console.log(`X: ${x}, Y: ${y}`);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(imgToDraw, 0, 0, imgToDraw.width, imgToDraw.height);
+
+        ctx.fillText('Your Name',x,y);
+    });
+
+    ctx.drawImage(imgToDraw, 0, 0, imgToDraw.width, imgToDraw.height);
+
+    ctx.font = `${fontSize} ${fontFamily}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = "bottom";
+    ctx.fillText('Your Name',x,y);
+
+    let downloadLink = document.createElement('a');
+    downloadLink.classList.add('demo-download-link');
+    downloadLink.href = canvas.toDataURL("image/png");
+    downloadLink.download = 'Demo.png';
+    downloadLink.innerText = "download demo certificate";
+
+    downloadLink.addEventListener('click', (event) => {
+        // downloadLink.click();
+        console.log('downloaded');
+        // event.preventDefault();
+    });
+
+
+    let generateForAllBtn = document.createElement('button');
+    generateForAllBtn.innerText = 'Generate for all';
+
+    generateForAllBtn.onclick = function () { generateForAll(fileForGenerateForAll,x,y); }
+    
+    
+    
+    let downloadForAllBtn = document.createElement('button');
+    downloadForAllBtn.innerText = 'Download Certificate For All Names';
+    downloadForAllBtn.addEventListener('click', (event) => {
+
+        event.preventDefault(); // Prevent default action
+                downloadForAll();
+
+        // const links = document.querySelectorAll('.download-link');
+        // links.forEach(link => {
+        //     const event = new MouseEvent('click', {
+        //         view: window,
+        //         bubbles: true,
+        //         cancelable: true
+        //     });
+        //     link.dispatchEvent(event);
+        // });
+    });    
+    
+    
+        let msg = document.createElement('h1');
+        msg.innerText = 'Now click inside the image where you want to put \'Your Name\' text. Then Click on Generate For All Button... ';
+        msg.style.textAlign = "Center";
+    document.getElementById('btnAndLinkContainer').innerHTML = "";
+    document.getElementById('btnAndLinkContainer').append(msg,downloadLink, generateForAllBtn,downloadForAllBtn);
+
+}
+
+
+
+function downloadForAll(){
+    const links = document.querySelectorAll('.download-link');
+            links.forEach(link => {
+                const event = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                link.dispatchEvent(event);
+            });
+}
 
 
 
