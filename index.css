@@ -40,27 +40,32 @@ body {
     color:black;
     font-weight: 600;
     transition: 0.3s ease-in;
+    margin-bottom: 25px;
 }
+
 
 #fileSelect:hover{
     transform: scale(1.1);
 }
 
-.fontstyles{
-    width:250px;
-    font-size: large;
+.inputContainer{
+    width:60%;
+    font-size: 20px;
     font-weight: bold;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    margin-top: 15px;
+    /* padding-top: 25px; */
     /* align-ite; */
 
 }
  
 
-#fontSize,#fontFamily{
+#fontSize,#fontFamily,#NameColumn,#excelInput{
     background:none;
     border: none;
     font-size: large;
@@ -78,6 +83,13 @@ body {
     background-color: rgba(0, 0, 0, 0.121);
 }
 
+/* #excelInput:{
+    background-color: none;
+} */
+/* 
+input#file-upload-button{
+    background:none;
+} */
 
 
 /* template to check for starts */
@@ -113,6 +125,7 @@ body {
     width:300px;
     background-color: black;
     gap: 7px;
+    cursor: pointer;
     
 }
 
@@ -167,11 +180,7 @@ body {
     gap: 25px;
     align-items: left;
     width: 100%;
-    /* margin: auto; */
-
-    
-
-   
+    /* margin: auto; */   
     /* align-items: left; */
 }
 

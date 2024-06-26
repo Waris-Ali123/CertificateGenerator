@@ -17,8 +17,6 @@ fileSelect.addEventListener(
 
 fileElem.addEventListener("change", handleFiles, false);
 
-
-
 function handleFiles() {
 
     if (!this.files.length) {
@@ -57,8 +55,6 @@ function handleFiles() {
 
     }
 }
-
-
 
 function makingTestTemplate(imgFetchedFromTestTemplate, fileForGenerateForAll) {
     const canvas = document.getElementById("myCanvas");
@@ -130,132 +126,18 @@ function makingTestTemplate(imgFetchedFromTestTemplate, fileForGenerateForAll) {
 }
 
 
-// let names1 = [{
-//     "name": "Iorgo khan"
-// }, {
-//     "name": "Mattias Kumar"
-// }, {
-//     "name": "Maison Jacksen"
-// }, {
-//     "name": "Barthel bahiillao"
-// }, {
-//     "name": "Nico Chaurasiya"
-// }, {
-//     "name": "Evelyn Harris"
-// }, {
-//     "name": "Oliver Smith"
-// }, {
-//     "name": "Liam Johnson"
-// }, {
-//     "name": "Noah Williams"
-// }, {
-//     "name": "Sophia Brown"
-// }, {
-//     "name": "Isabella Garcia"
-// }, {
-//     "name": "Mia Martinez"
-// }, {
-//     "name": "Amelia Rodriguez"
-// }, {
-//     "name": "Harper Davis"
-// }, {
-//     "name": "Evelyn Moore"
-// }, {
-//     "name": "Avery Thomas"
-// }, {
-//     "name": "Ella White"
-// }, {
-//     "name": "Scarlett Lopez"
-// }, {
-//     "name": "Grace Lee"
-// }, {
-//     "name": "Aria Gonzalez"
-// }, {
-//     "name": "Chloe Harris"
-// }, {
-//     "name": "Victoria Clark"
-// }, {
-//     "name": "Zoey Lewis"
-// }, {
-//     "name": "Lily Robinson"
-// }, {
-//     "name": "Layla Walker"
-// }, {
-//     "name": "Riley Perez"
-// }, {
-//     "name": "Nora Hall"
-// }, {
-//     "name": "Brooklyn Young"
-// }, {
-//     "name": "Hannah Allen"
-// }, {
-//     "name": "Leah King"
-// }, {
-//     "name": "Zoe Wright"
-// }, {
-//     "name": "Stella Scott"
-// }, {
-//     "name": "Hazel Green"
-// }, {
-//     "name": "Ellie Adams"
-// }, {
-//     "name": "Paisley Baker"
-// }, {
-//     "name": "Audrey Nelson"
-// }, {
-//     "name": "Skylar Carter"
-// }, {
-//     "name": "Violet Mitchell"
-// }, {
-//     "name": "Claire Perez"
-// }, {
-//     "name": "Bella Roberts"
-// }, {
-//     "name": "Aurora Turner"
-// }, {
-//     "name": "Lucy Phillips"
-// }, {
-//     "name": "Anna Campbell"
-// }, {
-//     "name": "Samantha Parker"
-// }, {
-//     "name": "Caroline Evans"
-// }, {
-//     "name": "Genesis Edwards"
-// }, {
-//     "name": "Aubrey Collins"
-// }, {
-//     "name": "Madelyn Stewart"
-// }, {
-//     "name": "Serenity Morris"
-// }, {
-//     "name": "Kennedy Rogers"
-// }];
-
-
-
-// let names2 = [{
-//     "name": "Iorgo khan"
-// }, {
-//     "name": "Mattias Kumar"
-// }, {
-//     "name": "Maison Jacksen"
-// }, {
-//     "name": "Barthel bahiillao"
-// }, {
-//     "name": "Nico Chaurasiya"
-// }];
-
-let names = [];
+let columns = { 'name' : [] } ;
 
 
 
 function generateForAll(impfile,x,y) {
+    
+
     document.getElementById('show-certificate').innerHTML = "";
 
-    names.forEach((elem) => {
+    columns.name.forEach((elem) => {
 
-        console.log(elem.name.toUpperCase());
+        console.log(elem.toUpperCase());
 
         let canvaAndDownloadLinkDiv = document.createElement('div');
         canvaAndDownloadLinkDiv.classList.add('canvaDiv');
@@ -279,12 +161,12 @@ function generateForAll(impfile,x,y) {
 
             canva_ctx.drawImage(canva_img, 0, 0, canva_img.width, canva_img.height);
 
-            drawText(canva_ctx, elem.name, x,y);
+            drawText(canva_ctx, elem, x,y);
 
             let downloadLink = document.createElement('a');
             downloadLink.href = canva.toDataURL("image/png");
-            downloadLink.download = `${elem.name.toUpperCase()}_certificate.png`;
-            downloadLink.innerText = `download ${elem.name}'s certificate`;
+            downloadLink.download = `${elem.toUpperCase()}_certificate.png`;
+            downloadLink.innerText = `download ${elem}'s certificate`;
             downloadLink.classList.add('download-link');
 
             // downloadLink.addEventListener('click', (event) => {
@@ -317,9 +199,6 @@ function drawText(canva_ctx, name, x, y) {
 }
 
 
-
-
-
 function downloadForAll(){
     const links = document.querySelectorAll('.download-link');
     
@@ -335,47 +214,47 @@ function downloadForAll(){
 }
 
 
-
 //handling excel input
 
+function fetchAndReadExcelFile() {
+    document.getElementById('excelInput').addEventListener('change', readingColumnData);
+    document.getElementById('NameColumn').addEventListener('input', readingColumnData);
 
-function fetchAndReadExcelFile(names) {
-    try {
-        document.getElementById('excelInput').addEventListener('change', function (e) {
-            const excelFile = e.target.files[0];
-            const reader = new FileReader();
+    function readingColumnData(e) {
+        if (e.target.id === 'NameColumn' && !document.getElementById('excelInput').files.length) {
+            console.log('No file chosen yet.');
+            return;
+        }
+        
+        columns.name = [];
+        console.log('readingColumnData called');
+        
+        let excelFile = document.getElementById('excelInput').files[0];
+        if (!excelFile) return;
 
-            reader.onload = function (event) {
-                const data = new Uint8Array(event.target.result);  //since the xlsx library does not support array buffer that's why we had convert it into typed array of bits
-                const workbook = XLSX.read(data, { type: 'array' });
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const data = new Uint8Array(event.target.result);  // since the xlsx library does not support array buffer, convert it into a typed array of bits
+            const workbook = XLSX.read(data, { type: 'array' });
+            const ourSheetName = workbook.SheetNames[0];
+            const ourSheetUnreadable = workbook.Sheets[ourSheetName];
+            let JsonData = XLSX.utils.sheet_to_json(ourSheetUnreadable, { header: 1 });
+            JsonData = JsonData.slice(1);
 
-                const ourSheetName = workbook.SheetNames[0];
-                
-                const ourSheetUnreadable = workbook.Sheets[ourSheetName];
-                const JsonData = XLSX.utils.sheet_to_json(ourSheetUnreadable);
+            let columnNoInput = document.getElementById('NameColumn');
+            let columnNoValue = columnNoInput.value - 1;
 
-                console.log(typeof(JsonData)); // Should be "object"
-                // console.log(JsonData);
-                
-                JsonData.forEach((row) =>{
-                    console.log(row.name);
-                    names.push(row);
-                    
-                });
-            };
+            JsonData.forEach((row) => {
+                if (row[columnNoValue] !== undefined) {
+                    columns.name.push(row[columnNoValue]);
+                }
+            });
 
-            reader.readAsArrayBuffer(excelFile);
+            console.log(columns);
+        };
 
-        });
-    } catch (error) {
-        console.error('Error fetching or reading the Excel file:', error);
+        reader.readAsArrayBuffer(excelFile);
     }
 }
 
-fetchAndReadExcelFile(names);
-
-
-
-
-
-
+fetchAndReadExcelFile();
